@@ -1,21 +1,30 @@
 <template>
-  <div class="clock-page flex justify-center items-center px-30px">
-    <div class="timer w-full" @click="fullScreen">
+  <div class="clock-page flex flex-col justify-center items-center px-30px">
+    <div class="time-header flex-1 flex flex-col justify-end">
+      <div class="date h-30px text-30px mb-10px overflow-hidden">
+        <span>
+          {{ date }}
+        </span>
+        <span class="text-27px ml-20px">{{ week }}</span>
+      </div>
+    </div>
+    <div class="timer flex-1 w-full" @click="fullScreen">
       <div class="time-block hour">
-        <ClockItem :value="currentTime[0]" />
-        <ClockItem :value="currentTime[1]" />
+        <ClockItem :value="time[0]" />
+        <ClockItem :value="time[1]" />
       </div>
       <div class="divide">:</div>
       <div class="time-block minute">
-        <ClockItem :value="currentTime[2]" />
-        <ClockItem :value="currentTime[3]" />
+        <ClockItem :value="time[2]" />
+        <ClockItem :value="time[3]" />
       </div>
       <div class="divide">:</div>
       <div class="time-block second">
-        <ClockItem :value="currentTime[4]" />
-        <ClockItem :value="currentTime[5]" />
+        <ClockItem :value="time[4]" />
+        <ClockItem :value="time[5]" />
       </div>
     </div>
+    <div class="time-footer flex-1"></div>
   </div>
 </template>
 
@@ -24,12 +33,30 @@ import dayjs from "dayjs";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import ClockItem from "./components/clock_item.vue";
 import { useNoSleep } from "@/hooks/useNoSleep";
-const timeformat = "HHmmss";
+const timeformat = "YYYY/MM/DD HHmmss d";
 const getTimerArray = () => {
-  return dayjs().format(timeformat).split("");
+  return dayjs().format(timeformat).split(" ");
 };
-const currentTime = ref(getTimerArray());
 
+const currentTime = ref(getTimerArray());
+const numberToChinese = new Map([
+  [0, "日"],
+  [1, "一"],
+  [2, "二"],
+  [3, "三"],
+  [4, "四"],
+  [5, "五"],
+  [6, "六"]
+]);
+const date = computed(() => {
+  return currentTime.value[0];
+});
+const time = computed(() => {
+  return currentTime.value[1].split("");
+});
+const week = computed(() => {
+  return "周" + numberToChinese.get(Number(currentTime.value[2]));
+});
 let timer: NodeJS.Timer;
 const refreshTime = () => {
   const delay = 1000 - (Date.now() % 1000);
@@ -52,7 +79,6 @@ const fullScreen = async () => {
     lastClickFullScreenTime = Date.now();
     return;
   }
-  noSleep.enable();
   lastClickFullScreenTime = 0;
   // 检测是否全屏
   if (document.fullscreenElement) {
@@ -60,6 +86,7 @@ const fullScreen = async () => {
     noSleep.disable();
     return;
   }
+  noSleep.enable();
   document.documentElement.requestFullscreen();
 };
 </script>
@@ -67,7 +94,7 @@ const fullScreen = async () => {
 <style lang="less" scoped>
 .clock-page {
   --bgColor: black;
-  --fontColor: white;
+  --fontColor: rgb(202, 202, 202);
   --blockGgColor: rgb(34, 34, 34);
   --fontSize: 130px;
   --perspectiveValue: 360px;
@@ -76,6 +103,9 @@ const fullScreen = async () => {
   font-family: Roboto-Medium;
   overflow: hidden;
   animation: color-change 1s infinite;
+  .date {
+    color: var(--fontColor);
+  }
   .timer {
     display: flex;
     justify-content: space-between;
