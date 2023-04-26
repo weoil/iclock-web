@@ -1,6 +1,8 @@
 # 翻页钟
 
-使用vue3+ts+vite实现的翻页时钟
+使用vue3+ts+vite实现的翻页时钟 
+
+[网站](http://clock.whatlike.cn/)
 
 ![示例图](./doc/example.jpg) 
 
