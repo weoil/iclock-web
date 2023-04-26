@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "dayjs": "^1.11.7",
     "mitt": "^3.0.0",
+    "nosleep.js": "^0.12.0",
     "pinia": "^2.0.13",
     "pinia-plugin-persist": "^1.0.0",
     "qs": "^6.10.3",

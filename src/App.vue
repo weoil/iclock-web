@@ -6,25 +6,20 @@
  * @Description: file content
 -->
 <script setup lang="ts">
-import { sayHello } from "./api/test";
-
-const onClick = () => {
-  sayHello();
-};
+import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <button @click="onClick"> Hello </button>
+  <RouterView />
 </template>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-  font-size: 32px;
+  touch-action: none;
+  -ms-content-zooming: none;
+}
+@font-face {
+  font-family: Roboto-Medium;
+  src: url(@/assets/font/Roboto-Medium.ttf);
 }
 </style>

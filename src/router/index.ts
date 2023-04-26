@@ -12,7 +12,12 @@ import type { App } from "vue";
 const router = createRouter({
   history: createWebHashHistory(),
   strict: true,
-  routes: [],
+  routes: [
+    {
+      path: "/",
+      component: () => import("../pages/clock/clock.vue")
+    }
+  ],
   scrollBehavior: () => ({ left: 0, top: 0 })
 });
 export const setupRouter = (app: App<Element>) => {
