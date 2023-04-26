@@ -59,7 +59,8 @@ watch(
     clip-path: inset(49% 0 0 0);
   }
   .f_animate {
-    animation: front_flip_down 0.4s ease-out 0s both;
+    animation: front_flip_down 0.4s ease-in 0s both;
+    clip-path: inset(0 0 53% 0);
   }
   .b_animate {
     animation: back_flip_down 0.4s ease-out 0.4s both;
