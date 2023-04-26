@@ -5,12 +5,12 @@
  * @LastEditTime: 2022-05-05 15:11:31
  * @Description: file content
  */
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 import type { App } from "vue";
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   strict: true,
   routes: [
     {
