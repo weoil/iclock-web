@@ -1,20 +1,21 @@
 <template>
   <div class="clock-page flex flex-col justify-center items-center px-30px">
     <div class="time-header flex-1 flex flex-col justify-end">
-      <div class="date h-30px text-30px mb-10px overflow-hidden">
+      <div class="date h-30px text-30px overflow-hidden">
         <span>
           {{ date }}
         </span>
         <span class="text-27px ml-20px">{{ week }}</span>
+        <span class="text-27px ml-20px" v-if="timeFlag === '12'">{{ isAM ? "上午" : "下午" }}</span>
       </div>
     </div>
-    <div class="timer flex-1 w-full" @click="fullScreen">
-      <div class="time-block hour">
+    <div class="timer flex-1 w-full my-20px">
+      <div class="time-block hour" @click="switchTimeFlag">
         <ClockItem :value="time[0]" />
         <ClockItem :value="time[1]" />
       </div>
       <div class="divide">:</div>
-      <div class="time-block minute">
+      <div class="time-block minute" @click="fullScreen">
         <ClockItem :value="time[2]" />
         <ClockItem :value="time[3]" />
       </div>
@@ -24,7 +25,11 @@
         <ClockItem :value="time[5]" />
       </div>
     </div>
-    <div class="time-footer flex-1"></div>
+    <div class="time-footer flex-1 text-18px">
+      <span @click="getChickenSoupForTheSoulApi">
+        {{ chickenSoupForTheSoul }}
+      </span>
+    </div>
   </div>
 </template>
 
@@ -33,12 +38,22 @@ import dayjs from "dayjs";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import ClockItem from "./components/clock_item.vue";
 import { useNoSleep } from "@/hooks/useNoSleep";
-const timeformat = "YYYY/MM/DD HHmmss d";
+import { useDoubleClick } from "@/hooks/useDoubleClick";
+import { getChickenSoupForTheSoul } from "@/api/clock";
+const timeformat24 = "YYYY/MM/DD HHmmss d A";
+const timeformat12 = "YYYY/MM/DD hhmmss d A";
+const timeFlag = ref<"12" | "24">("12");
 const getTimerArray = () => {
-  return dayjs().format(timeformat).split(" ");
+  return dayjs()
+    .format(timeFlag.value === "12" ? timeformat12 : timeformat24)
+    .split(" ");
 };
 
 const currentTime = ref(getTimerArray());
+//判断时间上午还是下午
+const isAM = computed(() => {
+  return currentTime.value[3] === "AM";
+});
 const numberToChinese = new Map([
   [0, "日"],
   [1, "一"],
@@ -59,27 +74,27 @@ const week = computed(() => {
 });
 let timer: NodeJS.Timer;
 const refreshTime = () => {
-  const delay = 1000 - (Date.now() % 1000);
+  clearTimeout(timer);
+  const now = Date.now();
+  const delay = 1000 - (now % 1000);
   currentTime.value = getTimerArray();
+  // 每个小时触发一次
+  if (now % (1000 * 60 * 60) === 0) {
+    getChickenSoupForTheSoulApi();
+  }
   timer = setTimeout(refreshTime, delay);
 };
 // 防止设备锁屏
 const noSleep = useNoSleep(false);
 onMounted(() => {
   refreshTime();
+  getChickenSoupForTheSoulApi();
 });
 onBeforeUnmount(() => {
   clearTimeout(timer);
   noSleep.disable();
 });
-let lastClickFullScreenTime = 0;
-const fullScreen = async () => {
-  console.log(lastClickFullScreenTime);
-  if (lastClickFullScreenTime + 300 < Date.now()) {
-    lastClickFullScreenTime = Date.now();
-    return;
-  }
-  lastClickFullScreenTime = 0;
+const fullScreen = useDoubleClick(async () => {
   // 检测是否全屏
   if (document.fullscreenElement) {
     document.exitFullscreen();
@@ -88,6 +103,18 @@ const fullScreen = async () => {
   }
   noSleep.enable();
   document.documentElement.requestFullscreen();
+});
+// 切换时间的显示模式
+const switchTimeFlag = useDoubleClick(() => {
+  timeFlag.value = timeFlag.value === "12" ? "24" : "12";
+  refreshTime();
+});
+
+// 心灵鸡汤
+const chickenSoupForTheSoul = ref("");
+const getChickenSoupForTheSoulApi = async () => {
+  const res = await getChickenSoupForTheSoul();
+  chickenSoupForTheSoul.value = res.data.hitokoto;
 };
 </script>
 
@@ -98,6 +125,7 @@ const fullScreen = async () => {
   --blockGgColor: rgb(34, 34, 34);
   --fontSize: 130px;
   --perspectiveValue: 360px;
+  color: rgb(202, 202, 202);
   background-color: var(--bgColor);
   height: 100vh;
   font-family: Roboto-Medium;
@@ -115,7 +143,6 @@ const fullScreen = async () => {
       width: 20px;
       height: 150px;
       line-height: 138px;
-      color: rgb(202, 202, 202);
       font-size: 48px;
       text-align: center;
     }
