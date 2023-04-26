@@ -141,6 +141,7 @@ const switchChickenSoupForTheSoul = useDoubleClick(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    user-select: none;
     .divide {
       flex-grow: 0;
       width: 20px;
@@ -153,15 +154,7 @@ const switchChickenSoupForTheSoul = useDoubleClick(() => {
       display: flex;
       align-items: center;
       justify-content: center;
-      // color: white;
-      // @font-size: 120px;
-      // font-size: @font-size;
-      // height: 260px;
-      // width: 200px;
-      // background-color: rgb(56, 56, 56);
-      // // padding: 0 40px;
       flex: 1;
-      // box-sizing: content-box;
       & + .time-block {
         margin-left: 20px;
       }
