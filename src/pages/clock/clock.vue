@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="time-footer flex-1 text-18px">
-      <span @click="getChickenSoupForTheSoulApi">
+      <span @click="switchChickenSoupForTheSoul">
         {{ chickenSoupForTheSoul }}
       </span>
     </div>
@@ -79,7 +79,7 @@ const refreshTime = () => {
   const delay = 1000 - (now % 1000);
   currentTime.value = getTimerArray();
   // 每个小时触发一次
-  if (now % (1000 * 60 * 60) === 0) {
+  if (currentTime.value[1].endsWith("0000")) {
     getChickenSoupForTheSoulApi();
   }
   timer = setTimeout(refreshTime, delay);
@@ -116,6 +116,9 @@ const getChickenSoupForTheSoulApi = async () => {
   const res = await getChickenSoupForTheSoul();
   chickenSoupForTheSoul.value = res.data.hitokoto;
 };
+const switchChickenSoupForTheSoul = useDoubleClick(() => {
+  getChickenSoupForTheSoulApi();
+});
 </script>
 
 <style lang="less" scoped>
