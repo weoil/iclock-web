@@ -42,7 +42,7 @@ import { useDoubleClick } from "@/hooks/useDoubleClick";
 import { getChickenSoupForTheSoul } from "@/api/clock";
 const timeformat24 = "YYYY/MM/DD HHmmss d A";
 const timeformat12 = "YYYY/MM/DD hhmmss d A";
-const timeFlag = ref<"12" | "24">("12");
+const timeFlag = ref<"12" | "24">("24");
 const getTimerArray = () => {
   return dayjs()
     .format(timeFlag.value === "12" ? timeformat12 : timeformat24)

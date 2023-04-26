@@ -16,6 +16,7 @@ import DefineOptions from "unplugin-vue-define-options/vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { createStyleImportPlugin } from "vite-plugin-style-import";
 import { viteMockServe } from "vite-plugin-mock";
+import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 const root = process.cwd();
@@ -65,7 +66,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             injectScript: `<script src="./inject.js"></script>`
           }
         }
-      })
+      }),
+      VitePWA()
     ],
 
     css: {
