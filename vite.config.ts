@@ -15,7 +15,7 @@ import EslintPlugin from "vite-plugin-eslint";
 import DefineOptions from "unplugin-vue-define-options/vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { createStyleImportPlugin } from "vite-plugin-style-import";
-import { viteMockServe } from "vite-plugin-mock";
+// import { viteMockServe } from "vite-plugin-mock";
 import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
@@ -37,6 +37,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   return {
     base: env.VITE_BASE_PATH,
     plugins: [
+      VitePWA(),
       Vue(),
       VueJsx(),
       WindiCSS(),
@@ -45,19 +46,19 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         // cache: false,
         include: ["src/**/*.vue", "src/**/*.ts", "src/**/*.tsx"] // 检查的文件
       }),
-      viteMockServe({
-        ignore: /^\_/,
-        mockPath: "mock",
-        logger: true,
-        localEnabled: !isBuild,
-        supportTs: true,
-        prodEnabled: isBuild,
-        injectCode: `
-          import { setupProdMockServer } from '../mock/_createProductionServer'
+      // viteMockServe({
+      //   ignore: /^\_/,
+      //   mockPath: "mock",
+      //   logger: true,
+      //   localEnabled: !isBuild,
+      //   supportTs: true,
+      //   prodEnabled: isBuild,
+      //   injectCode: `
+      //     import { setupProdMockServer } from '../mock/_createProductionServer'
 
-          setupProdMockServer()
-          `
-      }),
+      //     setupProdMockServer()
+      //     `
+      // }),
       DefineOptions(),
       createHtmlPlugin({
         inject: {
@@ -66,8 +67,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             injectScript: `<script src="./inject.js"></script>`
           }
         }
-      }),
-      VitePWA()
+      })
     ],
 
     css: {
@@ -92,7 +92,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       minify: "terser",
       outDir: env.VITE_OUT_DIR || "dist",
       sourcemap: env.VITE_SOURCEMAP === "true" ? "inline" : false,
-      brotliSize: false,
+      // brotliSize: false,
       terserOptions: {
         compress: {
           drop_debugger: env.VITE_DROP_DEBUGGER === "true",
