@@ -5,7 +5,7 @@ export const useClockStore = defineStore(
   "clock",
   () => {
     const config = reactive({
-      isShowSecond: false, // 是否显示秒
+      isShowSecond: true, // 是否显示秒
       timeShowFlag: "24" // 时间进制：12/24
     });
     return {
