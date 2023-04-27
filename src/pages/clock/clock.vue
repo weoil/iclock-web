@@ -29,10 +29,8 @@
         </div>
       </template>
     </div>
-    <div class="time-footer flex-1 text-18px">
-      <span @click="switchChickenSoupForTheSoul">
-        {{ chickenSoupForTheSoul }}
-      </span>
+    <div class="time-footer flex-1">
+      <ChickenSoup ref="chickSoupRef" />
     </div>
   </div>
 </template>
@@ -43,7 +41,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import ClockItem from "./components/clock_item.vue";
 import { useNoSleep } from "@/hooks/useNoSleep";
 import { useDoubleClick } from "@/hooks/useDoubleClick";
-import { getChickenSoupForTheSoul } from "@/api/clock";
+import ChickenSoup from "./components/chicken_soup.vue";
 import { useClockStore } from "@/store/clock";
 const timeformat24 = "YYYY/MM/DD HHmmss d A";
 const timeformat12 = "YYYY/MM/DD hhmmss d A";
@@ -54,7 +52,7 @@ const getTimerArray = () => {
     .format(clockConfig.value.timeShowFlag === "12" ? timeformat12 : timeformat24)
     .split(" ");
 };
-
+const chickSoupRef = ref();
 const currentTime = ref(getTimerArray());
 //判断时间上午还是下午
 const isAM = computed(() => {
@@ -87,7 +85,7 @@ const refreshTime = () => {
   currentTime.value = getTimerArray();
   // 每个小时触发一次
   if (currentTime.value[1].endsWith("0000")) {
-    getChickenSoupForTheSoulApi();
+    chickSoupRef.value && chickSoupRef.value.refreshChickenSoupForTheSoulApi();
   }
   timer = setTimeout(refreshTime, delay);
 };
@@ -95,7 +93,6 @@ const refreshTime = () => {
 const noSleep = useNoSleep(false);
 onMounted(() => {
   refreshTime();
-  getChickenSoupForTheSoulApi();
 });
 onBeforeUnmount(() => {
   clearTimeout(timer);
@@ -111,16 +108,6 @@ const fullScreen = useDoubleClick(async () => {
   }
   noSleep.enable();
   document.documentElement.requestFullscreen();
-});
-
-// 心灵鸡汤
-const chickenSoupForTheSoul = ref("");
-const getChickenSoupForTheSoulApi = async () => {
-  const res = await getChickenSoupForTheSoul();
-  chickenSoupForTheSoul.value = res.data.hitokoto;
-};
-const switchChickenSoupForTheSoul = useDoubleClick(() => {
-  getChickenSoupForTheSoulApi();
 });
 
 // 切换是否显示秒
