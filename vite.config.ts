@@ -39,8 +39,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     plugins: [
       VitePWA({
         manifest: {
-          name: "翻页时钟",
-          short_name: "翻钟"
+          name: "翻页时钟"
         }
       }),
       Vue(),
