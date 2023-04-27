@@ -6,7 +6,8 @@ export const useClockStore = defineStore(
   () => {
     const config = reactive({
       isShowSecond: true, // 是否显示秒
-      timeShowFlag: "24" // 时间进制：12/24
+      timeShowFlag: "24", // 时间进制：12/24
+      footerSwiperActiveIndex: 0 // 底部轮播图默认选中索引
     });
     return {
       config: config
