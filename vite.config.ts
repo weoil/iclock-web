@@ -37,11 +37,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   return {
     base: env.VITE_BASE_PATH,
     plugins: [
-      VitePWA({
-        manifest: {
-          name: "翻页时钟"
-        }
-      }),
+      VitePWA(),
       Vue(),
       VueJsx(),
       WindiCSS(),
