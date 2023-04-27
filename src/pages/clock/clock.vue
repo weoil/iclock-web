@@ -6,7 +6,9 @@
           {{ date }}
         </span>
         <span class="text-27px ml-20px">{{ week }}</span>
-        <span class="text-27px ml-20px" v-if="timeFlag === '12'">{{ isAM ? "上午" : "下午" }}</span>
+        <span class="text-27px ml-20px" v-if="clockConfig.timeShowFlag === '12'">{{
+          isAM ? "上午" : "下午"
+        }}</span>
       </div>
     </div>
     <div class="timer flex-1 w-full my-20px">
@@ -19,7 +21,7 @@
         <ClockItem :value="time[2]" />
         <ClockItem :value="time[3]" />
       </div>
-      <template v-if="isShowSecond">
+      <template v-if="clockConfig.isShowSecond">
         <div class="divide">:</div>
         <div class="time-block second">
           <ClockItem :value="time[4]" />
@@ -42,18 +44,17 @@ import ClockItem from "./components/clock_item.vue";
 import { useNoSleep } from "@/hooks/useNoSleep";
 import { useDoubleClick } from "@/hooks/useDoubleClick";
 import { getChickenSoupForTheSoul } from "@/api/clock";
+import { useClockStore } from "@/store/clock";
 const timeformat24 = "YYYY/MM/DD HHmmss d A";
 const timeformat12 = "YYYY/MM/DD hhmmss d A";
-const timeFlag = ref<"12" | "24">("24");
+const clockStore = useClockStore();
+const clockConfig = computed(() => clockStore.config);
 const getTimerArray = () => {
   return dayjs()
-    .format(timeFlag.value === "12" ? timeformat12 : timeformat24)
+    .format(clockConfig.value.timeShowFlag === "12" ? timeformat12 : timeformat24)
     .split(" ");
 };
-const isShowSecond = ref(true);
-const switchShowSecond = useDoubleClick(() => {
-  isShowSecond.value = !isShowSecond.value;
-});
+
 const currentTime = ref(getTimerArray());
 //判断时间上午还是下午
 const isAM = computed(() => {
@@ -78,6 +79,7 @@ const week = computed(() => {
   return "周" + numberToChinese.get(Number(currentTime.value[2]));
 });
 let timer: NodeJS.Timer;
+// 刷新时间
 const refreshTime = () => {
   clearTimeout(timer);
   const now = Date.now();
@@ -99,6 +101,7 @@ onBeforeUnmount(() => {
   clearTimeout(timer);
   noSleep.disable();
 });
+// 全屏并尝试进行屏幕常亮
 const fullScreen = useDoubleClick(async () => {
   // 检测是否全屏
   if (document.fullscreenElement) {
@@ -109,11 +112,6 @@ const fullScreen = useDoubleClick(async () => {
   noSleep.enable();
   document.documentElement.requestFullscreen();
 });
-// 切换时间的显示模式
-const switchTimeFlag = useDoubleClick(() => {
-  timeFlag.value = timeFlag.value === "12" ? "24" : "12";
-  refreshTime();
-});
 
 // 心灵鸡汤
 const chickenSoupForTheSoul = ref("");
@@ -123,6 +121,17 @@ const getChickenSoupForTheSoulApi = async () => {
 };
 const switchChickenSoupForTheSoul = useDoubleClick(() => {
   getChickenSoupForTheSoulApi();
+});
+
+// 切换是否显示秒
+const switchShowSecond = useDoubleClick(() => {
+  clockConfig.value.isShowSecond = !clockConfig.value.isShowSecond;
+});
+
+// 切换时间的显示模式
+const switchTimeFlag = useDoubleClick(() => {
+  clockConfig.value.timeShowFlag = clockConfig.value.timeShowFlag === "12" ? "24" : "12";
+  refreshTime();
 });
 </script>
 
@@ -151,7 +160,7 @@ const switchChickenSoupForTheSoul = useDoubleClick(() => {
       flex-grow: 0;
       width: 20px;
       height: 150px;
-      line-height: 138px;
+      line-height: 135px;
       font-size: 48px;
       text-align: center;
     }
