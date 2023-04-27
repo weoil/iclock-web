@@ -46,6 +46,7 @@ watch(
   font-size: var(--fontSize);
   height: 150px;
   width: 100%;
+  max-width: 110px;
   background-color: var(--blockGgColor);
 }
 .clock-item {

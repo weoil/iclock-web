@@ -1,8 +1,8 @@
 <template>
   <div class="clock-page flex flex-col justify-center items-center px-30px">
-    <div class="time-header flex-1 flex flex-col justify-end">
+    <div class="time-header flex-1 flex flex-col justify-end select-none">
       <div class="date h-30px text-30px overflow-hidden">
-        <span>
+        <span @click="switchShowSecond">
           {{ date }}
         </span>
         <span class="text-27px ml-20px">{{ week }}</span>
@@ -19,11 +19,13 @@
         <ClockItem :value="time[2]" />
         <ClockItem :value="time[3]" />
       </div>
-      <div class="divide">:</div>
-      <div class="time-block second">
-        <ClockItem :value="time[4]" />
-        <ClockItem :value="time[5]" />
-      </div>
+      <template v-if="isShowSecond">
+        <div class="divide">:</div>
+        <div class="time-block second">
+          <ClockItem :value="time[4]" />
+          <ClockItem :value="time[5]" />
+        </div>
+      </template>
     </div>
     <div class="time-footer flex-1 text-18px">
       <span @click="switchChickenSoupForTheSoul">
@@ -48,7 +50,10 @@ const getTimerArray = () => {
     .format(timeFlag.value === "12" ? timeformat12 : timeformat24)
     .split(" ");
 };
-
+const isShowSecond = ref(true);
+const switchShowSecond = useDoubleClick(() => {
+  isShowSecond.value = !isShowSecond.value;
+});
 const currentTime = ref(getTimerArray());
 //判断时间上午还是下午
 const isAM = computed(() => {
