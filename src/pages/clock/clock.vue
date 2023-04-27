@@ -1,6 +1,6 @@
 <template>
   <div class="clock-page flex flex-col justify-center items-center px-30px">
-    <div class="time-header flex-shrink-1 flex flex-col justify-end select-none h-1/4 box-content">
+    <div class="time-header flex-shrink-1 flex flex-col justify-end select-none h-3/10 box-content">
       <div class="date h-30px text-30px overflow-hidden">
         <span @click="switchShowSecond">
           {{ date }}
@@ -11,7 +11,7 @@
         }}</span>
       </div>
     </div>
-    <div class="timer flex-grow-1 flex-shrink-0 w-full my-20px">
+    <div class="timer flex-grow-1 flex-shrink-0 w-full my-30px">
       <div class="time-block hour" @click="switchTimeFlag">
         <ClockItem :value="time[0]" />
         <ClockItem :value="time[1]" />

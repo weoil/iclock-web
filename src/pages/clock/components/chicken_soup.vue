@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="chicken-soup text-18px select-none text-center flex justify-center items-center h-full"
-  >
+  <div class="chicken-soup text-18px select-none text-center flex justify-center h-full mt-8px">
     <span @click="switchChickenSoupForTheSoul">
       {{ chickenSoupForTheSoul }}
     </span>
