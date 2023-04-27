@@ -88,6 +88,10 @@ const refreshTime = () => {
   if (currentTime.value[1].endsWith("0000")) {
     event.emit("clock_integral_point");
   }
+  // 每十分钟触发一次
+  if (currentTime.value[1].endsWith("000")) {
+    event.emit("clock_ten_minute");
+  }
   timer = setTimeout(refreshTime, delay);
 };
 // 防止设备锁屏

@@ -19,7 +19,7 @@ import { useEmitt } from "@/hooks/useEmitt";
 import { ref } from "vue";
 const bandList = ref<WeiBoHotBand_list[]>([]);
 useEmitt({
-  name: "clock_integral_point",
+  name: "clock_ten_minute",
   callback: () => refreshWeiBoHotsApi()
 });
 const refreshWeiBoHotsApi = async () => {
