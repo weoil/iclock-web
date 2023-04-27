@@ -1,5 +1,7 @@
 <template>
-  <div class="chicken-soup text-18px select-none">
+  <div
+    class="chicken-soup text-18px select-none text-center flex justify-center items-center h-full"
+  >
     <span @click="switchChickenSoupForTheSoul">
       {{ chickenSoupForTheSoul }}
     </span>
@@ -9,7 +11,12 @@
 <script setup lang="ts">
 import { getChickenSoupForTheSoul } from "@/api/clock";
 import { useDoubleClick } from "@/hooks/useDoubleClick";
+import { useEmitt } from "@/hooks/useEmitt";
 import { onMounted, ref } from "vue";
+useEmitt({
+  name: "clock_integral_point",
+  callback: () => refreshChickenSoupForTheSoulApi()
+});
 // 心灵鸡汤
 const chickenSoupForTheSoul = ref("");
 const refreshChickenSoupForTheSoulApi = async () => {

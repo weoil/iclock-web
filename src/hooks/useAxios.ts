@@ -83,7 +83,7 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(
   (response: AxiosResponse<Recordable>) => {
-    if (response.data.code && response.data.msg) {
+    if (response.data.code !== null && response.data.msg) {
       if (response.data.code === result_code) {
         return response.data;
       } else {

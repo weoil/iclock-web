@@ -1,6 +1,6 @@
 <template>
   <div class="clock-page flex flex-col justify-center items-center px-30px">
-    <div class="time-header flex-1 flex flex-col justify-end select-none">
+    <div class="time-header flex-shrink-1 flex flex-col justify-end select-none h-1/4 box-content">
       <div class="date h-30px text-30px overflow-hidden">
         <span @click="switchShowSecond">
           {{ date }}
@@ -11,7 +11,7 @@
         }}</span>
       </div>
     </div>
-    <div class="timer flex-1 w-full my-20px">
+    <div class="timer flex-grow-1 flex-shrink-0 w-full my-20px">
       <div class="time-block hour" @click="switchTimeFlag">
         <ClockItem :value="time[0]" />
         <ClockItem :value="time[1]" />
@@ -29,8 +29,8 @@
         </div>
       </template>
     </div>
-    <div class="time-footer flex-1">
-      <ChickenSoup ref="chickSoupRef" />
+    <div class="time-footer h-1/3 flex-grow-0 overflow-hidden flex-shrink-1 w-full">
+      <ClockFooter />
     </div>
   </div>
 </template>
@@ -41,10 +41,12 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import ClockItem from "./components/clock_item.vue";
 import { useNoSleep } from "@/hooks/useNoSleep";
 import { useDoubleClick } from "@/hooks/useDoubleClick";
-import ChickenSoup from "./components/chicken_soup.vue";
+import ClockFooter from "./components/clock_footer.vue";
 import { useClockStore } from "@/store/clock";
+import { useEmitt } from "@/hooks/useEmitt";
 const timeformat24 = "YYYY/MM/DD HHmmss d A";
 const timeformat12 = "YYYY/MM/DD hhmmss d A";
+const event = useEmitt().emitter;
 const clockStore = useClockStore();
 const clockConfig = computed(() => clockStore.config);
 const getTimerArray = () => {
@@ -52,7 +54,6 @@ const getTimerArray = () => {
     .format(clockConfig.value.timeShowFlag === "12" ? timeformat12 : timeformat24)
     .split(" ");
 };
-const chickSoupRef = ref();
 const currentTime = ref(getTimerArray());
 //判断时间上午还是下午
 const isAM = computed(() => {
@@ -85,7 +86,7 @@ const refreshTime = () => {
   currentTime.value = getTimerArray();
   // 每个小时触发一次
   if (currentTime.value[1].endsWith("0000")) {
-    chickSoupRef.value && chickSoupRef.value.refreshChickenSoupForTheSoulApi();
+    event.emit("clock_integral_point");
   }
   timer = setTimeout(refreshTime, delay);
 };

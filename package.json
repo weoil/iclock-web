@@ -16,6 +16,7 @@
     "pinia": "^2.0.13",
     "pinia-plugin-persist": "^1.0.0",
     "qs": "^6.10.3",
+    "swiper": "^9.2.4",
     "vue": "^3.2.25",
     "vue-router": "^4.0.15",
     "vue-types": "^4.1.1"

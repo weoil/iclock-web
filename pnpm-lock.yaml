@@ -32,6 +32,7 @@ specifiers:
   prettier: ^2.6.2
   prettier-eslint: ^14.0.2
   qs: ^6.10.3
+  swiper: ^9.2.4
   typescript: ^4.6.4
   unplugin-vue-define-options: ^0.6.1
   vite: ^4.3.2
@@ -56,6 +57,7 @@ dependencies:
   pinia: registry.npmmirror.com/pinia/2.0.13_typescript@4.6.4+vue@3.2.33
   pinia-plugin-persist: registry.npmmirror.com/pinia-plugin-persist/1.0.0_pinia@2.0.13+vue@3.2.33
   qs: registry.npmmirror.com/qs/6.10.3
+  swiper: 9.2.4
   vue: registry.npmmirror.com/vue/3.2.33
   vue-router: registry.npmmirror.com/vue-router/4.0.15_vue@3.2.33
   vue-types: registry.npmmirror.com/vue-types/4.1.1_vue@3.2.33
@@ -2985,6 +2987,10 @@ packages:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
     deprecated: Please use @jridgewell/sourcemap-codec instead
 
+  /ssr-window/4.0.2:
+    resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
+    dev: false
+
   /string.prototype.matchall/4.0.8:
     resolution: {integrity: sha512-6zOCOcJ+RJAQshcTvXPHoxoQGONa3e/Lqx90wUA+wEzX78sg5Bo+1tQo4N0pohS0erG9qtCqJDjNCQBjeWVxyg==}
     dependencies:
@@ -3055,6 +3061,13 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /swiper/9.2.4:
+    resolution: {integrity: sha512-L7y3K/iiMXNYQ94FbfcJn7jex4QPnS4+voXGupTdC+UHW4XrR40QDdm4c9hXJ+Br0Il7PP0vP1W3goM9/Ly6Sg==}
+    engines: {node: '>= 4.7.0'}
+    dependencies:
+      ssr-window: 4.0.2
+    dev: false
 
   /temp-dir/2.0.0:
     resolution: {integrity: sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==}
